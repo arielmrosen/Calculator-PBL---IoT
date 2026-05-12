@@ -4,13 +4,13 @@
 // Presented to: Daphne Saju, on May 14, 2026
 
 
-#include <LiquidCrystal.h>
+#include <LiquidCrystal.h> //include the LCD library
 
 int Contrast=75; //make an integer to have a contrast for the contrast pin (I had no potentiometer and found a video on line for how to wire the LCD without one)
 const int rs=8, en=9, d4=10, d5=11, d6=12, d7=13;  // lcd pinout
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7); //lcd pins declaration
 
-long Number, Num1, Num2; //define storage system used for the variables in the equation
+float Number, Num1, Num2; //define storage system used for the variables in the equation
 char action; //define storage system used for the action in the equation
 boolean result=false; //define storage system for whether or not the equation is ready to be equated
 boolean error=false; //define a storage system for whether or not a division by 0 error is flagged
@@ -23,18 +23,18 @@ void setup(){
 
   analogWrite(6, Contrast);
   lcd.begin(16, 2); //declare size of lcd
-  delay(1000);
-  Serial.println();
-  Serial.print("Arduino Calc - IoT PBL");
-  lcd.print("Arduino Calc");
+  delay(1000); //wait a bit, since the lcd message bugs out briefly when it first initializes
+  Serial.println(); //start a new line in the serial monitor for ev
+  Serial.print("Arduino Calc - IoT PBL"); //project name display
+  lcd.print("Arduino Calc"); //project name display
   lcd.setCursor(0, 1);
-  lcd.print("IoT PBL");
-  delay(2000);
+  lcd.print("IoT PBL"); //project name display
+  delay(3000); //keep the display on the lcd long enough to be read
   lcd.clear();
 
-  lcd.print("Enter equation:");
-  Serial.println();
-  Serial.println("Enter equation:");
+  lcd.print("Enter equation:"); //prompt an equation
+  Serial.println(); //new line
+  Serial.println("Enter equation:"); //prompt an equation
 }
 
 void loop(){
@@ -42,7 +42,7 @@ void loop(){
     char key=Serial.read(); //keep reading the serial monitor input while there are inputs being inputted
 
     if(key=='\n'){ //if enter is pressed, and a line is returned
-      result=true; //make the boolean state be true, thus continuing with other functions
+      result=true; //make the boolean state be true, thus continuing with the other functions
     } 
     else{
       input=input+key; //add the inputted key to the previously made empty string, thus now displaying the key as the string
@@ -54,11 +54,11 @@ void loop(){
     calculateResult(); //function to be created later
     displayResult(); //function to be created later
 
-    delay(500);
-
-    input=""; //once all is displayed, reset the input string to blank
-    result=false; //once all is displayed, reset the boolean state to false (thus now waiting for an 'ENTER')
-
+    input=""; // once all is displayed, reset the input string to blank
+    result=false; // once all is displayed, reset the result boolean state to false (thus now waiting for an 'ENTER')
+    error=false; // once all is displayed, reset the error boolean state to false (thus now waiting for an 'ENTER')
+    
+    Serial.println();
     Serial.println("Enter next equation:"); //ready to start again
   }
 }
@@ -126,11 +126,14 @@ void displayResult(){
     
     lcd.clear(); //remove anything else, since the error overrrides
       lcd.setCursor(0, 0);
-      lcd.print("ERROR: Division");
+      lcd.print("ERROR: Division"); //display the error message on the lcd
       lcd.setCursor(0, 1);
       lcd.print("By The Number 0"); //display the error message on the lcd
-
       Serial.println("ERROR: Division By The Number 0"); //display the error message on the serial monitor
+      delay(5000); //wait to make the message readable
+      lcd.clear(); //clear
+      lcd.print("Enter Equation:"); //new equation prompt
+      return;
   }
 
   else{
@@ -143,9 +146,10 @@ void displayResult(){
 
     Serial.print("Result: "); //serial monitor print the answer to the equation
     Serial.println(Number);
-    delay(5000);
-    lcd.clear();
-    lcd.print("Enter Equation:");
+    
+    delay(5000); //wait to make the message readable
+    lcd.clear(); //clear
+    lcd.print("Enter Equation:"); //new equation prompt
     }
   }
 }
