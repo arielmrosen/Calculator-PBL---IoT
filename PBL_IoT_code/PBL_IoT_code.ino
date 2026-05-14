@@ -91,15 +91,12 @@ void calculateResult(){
   if(action=='+'){ //logic for when the operator is '+'
     Number=Num1+Num2;
   }
-
   else if(action=='-'){ //logic for when the operator is'-'
     Number=Num1-Num2;
   }
-
   else if(action=='*'){ //logic for when the operator is'*'
     Number=Num1*Num2;
   }
-
   else if(action=='/'){ //logic for when the operator is '/'
     if(Num2==0){ //if you try dividing by 0
 
@@ -112,9 +109,7 @@ void calculateResult(){
   }
 }
 
-
 void displayResult(){
-
   lcd.clear(); //clear the lcd, to make the code repeatable
 
   lcd.setCursor(0, 0); //set cursor to the beginning of the lcd, and display the equation
