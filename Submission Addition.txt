@@ -1,3 +1,0 @@
-https://forum.arduino.cc/t/parsing-serial-data-to-int-variables/361970
-
-As well, I have added a photo of my setup to my GitHub repository
